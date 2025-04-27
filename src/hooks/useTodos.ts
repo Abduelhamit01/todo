@@ -1,0 +1,80 @@
+import React, { useState, useEffect } from "react";
+
+export type Item = { id: number; text: string };
+
+export function useTodos() {
+  const [items, setItems] = useState<Item[]>([]);
+  const [value, setValue] = useState("");
+  const [editingItemId, setEditingItemId] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedItems = localStorage.getItem("items");
+      if (storedItems) {
+        setItems(JSON.parse(storedItems));
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("items", JSON.stringify(items));
+    }
+  }, [items]);
+
+  function toggleEditing(id: number) {
+    if (id === editingItemId) {
+      setEditingItemId(null);
+    } else {
+      setEditingItemId(id);
+    }
+  }
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    localStorage.setItem("items", JSON.stringify(items));
+  }
+
+  function handleDelete(id: number) {
+    const newList = items.filter(item => item.id !== id);
+    setItems(newList);
+    localStorage.setItem("items", JSON.stringify(newList));
+  }
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setValue(e.target.value);
+  }
+
+  function handleEditChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const newValue = e.target.value;
+    const updatedItems = items.map(task =>
+      task.id === editingItemId ? { ...task, text: newValue } : task
+    );
+    setItems(updatedItems);
+    localStorage.setItem("items", JSON.stringify(updatedItems));
+  }
+
+  function handleAdd() {
+    const newItem = { id: Date.now(), text: value };
+    setItems([...items, newItem]);
+    setValue("");
+  }
+
+  function handleClear() {
+    setItems([]);
+  }
+
+  return {
+    items,
+    value,
+    editingItemId,
+    setValue,
+    toggleEditing,
+    handleSubmit,
+    handleDelete,
+    handleChange,
+    handleEditChange,
+    handleAdd,
+    handleClear,
+  };
+}
