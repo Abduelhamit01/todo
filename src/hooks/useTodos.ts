@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-export type Item = { id: number; text: string };
+export type Item = { id: number; text: string, done: boolean };
 
 export function useTodos() {
   const [items, setItems] = useState<Item[]>([]);
@@ -55,13 +55,18 @@ export function useTodos() {
   }
 
   function handleAdd() {
-    const newItem = { id: Date.now(), text: value };
+    const newItem = { id: Date.now(), text: value};
     setItems([...items, newItem]);
     setValue("");
   }
 
   function handleClear() {
     setItems([]);
+  }
+
+  function onToggleDone(id: number, done: boolean){
+    const updatedItems = items.map(item => item.id===id ? {...item, done} : item);
+    setItems(updatedItems);
   }
 
   return {
@@ -76,5 +81,6 @@ export function useTodos() {
     handleEditChange,
     handleAdd,
     handleClear,
+    onToggleDone
   };
 }

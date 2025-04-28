@@ -16,6 +16,7 @@ export default function Home() {
     handleEditChange,
     handleDelete,
     toggleEditing,
+    onToggleDone,
   } = useTodos();
 
   return (
@@ -35,6 +36,7 @@ export default function Home() {
           onEditChange={handleEditChange}
           onDelete={handleDelete}
           onToggleEditing={toggleEditing}
+          onToggleDone={onToggleDone}
         />
       </div>
     </div>

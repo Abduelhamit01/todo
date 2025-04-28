@@ -8,6 +8,7 @@ type TodoListProps = {
   onEditChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onDelete: (id: number) => void;
   onToggleEditing: (id: number) => void;
+  onToggleDone: (id: number, done: boolean) => void;
 };
 
 export default function TodoList({
@@ -16,6 +17,7 @@ export default function TodoList({
   onEditChange,
   onDelete,
   onToggleEditing,
+  onToggleDone,
 }: TodoListProps) {
   return (
     <ul className="space-y-4">
@@ -27,7 +29,8 @@ export default function TodoList({
           onEditChange={onEditChange}
           onDelete={() => onDelete(item.id)}
           onToggleEditing={() => onToggleEditing(item.id)}
-        />
+          onToggleDone={onToggleDone}
+          />
       ))}
     </ul>
   );
