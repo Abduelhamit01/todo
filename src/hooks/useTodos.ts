@@ -55,7 +55,7 @@ export function useTodos() {
   }
 
   function handleAdd() {
-    const newItem = { id: Date.now(), text: value};
+    const newItem = { id: Date.now(), text: value, done: false };
     setItems([...items, newItem]);
     setValue("");
   }
