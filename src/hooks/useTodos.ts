@@ -73,7 +73,10 @@ export function useTodos() {
         timerRef.current = setTimeout(() => handleDelete(id), 3000)
       }
       else {
-        clearTimeout(timerRef.current)
+        if(timerRef.current) {
+          clearTimeout(timerRef.current);
+          timerRef.current = null;
+        }
       }
 
     setItems(updatedItems);
