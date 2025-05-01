@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 export type Item = { id: number; text: string, done: boolean };
 
@@ -6,6 +6,9 @@ export function useTodos() {
   const [items, setItems] = useState<Item[]>([]);
   const [value, setValue] = useState("");
   const [editingItemId, setEditingItemId] = useState<number | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -65,7 +68,14 @@ export function useTodos() {
   }
 
   function onToggleDone(id: number, done: boolean){
-    const updatedItems = items.map(item => item.id===id ? {...item, done} : item);
+    const updatedItems = items.map(item => item.id===id ? {...item, done} : item);    
+    if (done) {
+        timerRef.current = setTimeout(() => handleDelete(id), 3000)
+      }
+      else {
+        clearTimeout(timerRef.current)
+      }
+
     setItems(updatedItems);
   }
 

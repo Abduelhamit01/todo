@@ -26,6 +26,7 @@ export default function TodoItem({
         type="checkbox"
         checked={item.done}
         onChange={(e) => onToggleDone(item.id, e.target.checked)}
+
       />
       {isEditing ? (
         <input
