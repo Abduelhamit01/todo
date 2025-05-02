@@ -6,7 +6,8 @@ export function useTodos() {
   const [items, setItems] = useState<Item[]>([]);
   const [value, setValue] = useState("");
   const [editingItemId, setEditingItemId] = useState<number | null>(null);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  // const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timersRef = useRef<Map<number, NodeJS.Timeout>>(new Map());
 
 
 
@@ -39,6 +40,8 @@ export function useTodos() {
   }
 
   function handleDelete(id: number) {
+    timersRef.current.delete(id);
+
     const newList = items.filter(item => item.id !== id);
     setItems(newList);
     localStorage.setItem("items", JSON.stringify(newList));
@@ -68,18 +71,25 @@ export function useTodos() {
   }
 
   function onToggleDone(id: number, done: boolean){
-    const updatedItems = items.map(item => item.id===id ? {...item, done} : item);    
-    if (done) {
-        timerRef.current = setTimeout(() => handleDelete(id), 3000)
-      }
-      else {
-        if(timerRef.current) {
-          clearTimeout(timerRef.current);
-          timerRef.current = null;
-        }
-      }
+    // Erst alten Timer aufräumen (falls vorhanden)
+    const existingTimer = timersRef.current.get(id);
+    if (existingTimer) {
+        clearTimeout(existingTimer);
+        timersRef.current.delete(id);
+    }
 
+    // Items updaten
+    const updatedItems = items.map(item => item.id===id ? {...item, done} : item);    
     setItems(updatedItems);
+    
+    // Timer nur setzen wenn done=true
+    if (done) {
+        const timer = setTimeout(() => {
+            setItems(prevItems => prevItems.filter(item => item.id !== id));
+            timersRef.current.delete(id);
+        }, 3000);
+        timersRef.current.set(id, timer);
+    }
   }
 
   return {
