@@ -1,4 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Todo App
+
+A modern Todo application built with Next.js and TypeScript. The app allows you to create, edit, and delete tasks. Completed tasks are automatically removed after 3 seconds.
+
+## Features
+
+- ✅ Create new tasks
+- ✏️ Edit existing tasks
+- 🗑️ Delete tasks
+- ⏱️ Automatic removal of completed tasks after 3 seconds
+- 💾 Local storage for task persistence
+- ⌨️ Enter key support for adding new tasks
+
+## Technologies
+
+- Next.js
+- TypeScript
+- React Hooks
+- LocalStorage for data persistence
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/Abduelhamit01/todo-app.git
+```
+
+2. Install dependencies:
+```bash
+cd todo-app
+npm install
+```
+
+3. Start the development server:
+```bash
+npm run dev
+```
+
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Usage
+
+- Enter a new task in the input field and press Enter or click "Add"
+- Click on a task to edit it
+- Mark a task as completed to automatically remove it after 3 seconds
+- Use the "Delete All" button to remove all tasks
+
+## License
+
+MIT
 
 ## Getting Started
 
