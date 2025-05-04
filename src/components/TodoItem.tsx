@@ -22,7 +22,7 @@ export default function TodoItem({
 
   return (
     <li className="flex items-center justify-between mt-7 bg-blue-50 rounded-lg shadow p-4 hover:bg-blue-100 transition">
-      <input className="mr-5"
+      <input id="task-done" className="mr-5"
         type="checkbox"
         checked={item.done}
         onChange={(e) => onToggleDone(item.id, e.target.checked)}

@@ -6,7 +6,6 @@ export function useTodos() {
   const [items, setItems] = useState<Item[]>([]);
   const [value, setValue] = useState("");
   const [editingItemId, setEditingItemId] = useState<number | null>(null);
-  // const timerRef = useRef<NodeJS.Timeout | null>(null);
   const timersRef = useRef<Map<number, NodeJS.Timeout>>(new Map());
 
 
@@ -81,6 +80,7 @@ export function useTodos() {
     // Items updaten
     const updatedItems = items.map(item => item.id===id ? {...item, done} : item);    
     setItems(updatedItems);
+
     
     // Timer nur setzen wenn done=true
     if (done) {
@@ -90,6 +90,21 @@ export function useTodos() {
         }, 3000);
         timersRef.current.set(id, timer);
     }
+  }
+
+  function useKeyboardShortcut({ key, onKeyPressed }: { key: string, onKeyPressed: () => void }) {
+    useEffect(() => {
+      function keyDownHandler(e: KeyboardEvent) {
+        if (e.key === key) {
+          e.preventDefault();
+          onKeyPressed();
+        }
+      }
+      document.addEventListener("keydown", keyDownHandler);
+      return () => {
+        document.removeEventListener("keydown", keyDownHandler);
+      };
+    }, [key]);
   }
 
   return {
